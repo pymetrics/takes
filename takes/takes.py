@@ -4,6 +4,10 @@ from typing import Any, Dict, Tuple
 from inspect import getfullargspec
 
 
+class ObjectConversionError(Exception):
+    pass
+
+
 class takes:
     def __init__(self, klass, name=None):
         self.klass = klass
@@ -53,4 +57,9 @@ class takes:
     def _convert_object(self, obj):
         if isinstance(obj, self.klass):
             return obj
-        return self.klass(**obj)
+        try:
+            return self.klass(**obj)
+        except Exception as exc:
+            raise ObjectConversionError(
+                f"Error converting {type(obj)} to {self.klass}: {obj}"
+            ) from exc

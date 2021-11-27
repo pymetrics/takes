@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 import pytest
 
-from takes.takes import takes
+from takes.takes import ObjectConversionError, takes
 
 
 @dataclass
@@ -118,3 +118,13 @@ def test_decorated_function_with_positional_arg_called_with_incorrect_kwarg():
     with pytest.raises(TypeError) as exc:
         test(1, wrong=1)
         assert "wrong" in str(exc.value)
+
+
+def test_object_conversion_error():
+    @takes(Point)
+    def test(point):
+        pass
+
+    with pytest.raises(ObjectConversionError) as exc:
+        test("not a point")
+        assert "Error converting string to Point: not a point" == str(exc.value)
