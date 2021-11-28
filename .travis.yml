@@ -23,7 +23,7 @@ deploy:
   distributions: sdist bdist_wheel
   username: $PYPI_USERNAME
   password: $PYPI_PASSWORD
-  server: https://pypi.python.org/simple
+  server: https://upload.pypi.org/legacy/
   edge: true
   skip_existing: true
   on:
