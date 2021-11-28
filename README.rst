@@ -73,7 +73,8 @@ code:
     >>> my_function(Point(x=1, y=1))
     "x=1, y=1"
 
-Further, takes performs type checks at run-time,
+Further, takes performs type checks at run-time.
+
 Credits
 -------
 
