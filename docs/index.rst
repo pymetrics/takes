@@ -1,5 +1,5 @@
-Welcome to Takes's documentation!
-======================================
+Welcome to Takes documentation!
+===============================
 
 .. toctree::
    :maxdepth: 2
@@ -8,7 +8,6 @@ Welcome to Takes's documentation!
    readme
    installation
    usage
-   modules
    contributing
    history
 

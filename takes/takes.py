@@ -1,7 +1,7 @@
 """Main module."""
 from functools import wraps
 from typing import Any, Dict, Tuple
-from inspect import getfullargspec
+from inspect import getfullargspec, signature
 
 
 class ObjectConversionError(Exception):
@@ -25,6 +25,10 @@ class takes:
         def wrapper(*args, **kwargs):
             args, kwargs = self._replace_object(func, args, kwargs)
             return func(*args, **kwargs)
+
+        # This lets us stack @takes decorators,
+        # because @wraps does not entirely preserve the signature.
+        wrapper.__signature__ = signature(func)
 
         return wrapper
 

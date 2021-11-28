@@ -3,6 +3,7 @@
 """Tests for `takes` package."""
 
 from dataclasses import dataclass
+from functools import wraps
 
 import pytest
 
@@ -128,3 +129,38 @@ def test_object_conversion_error():
     with pytest.raises(ObjectConversionError) as exc:
         test("not a point")
         assert "Error converting string to Point: not a point" == str(exc.value)
+
+
+def test_convert_multiple():
+    @takes(Point, name="p1")
+    @takes(Point, name="p2")
+    def test(p1, p2):
+        assert isinstance(p1, Point)
+        assert isinstance(p2, Point)
+
+    test({"x": 1, "y": 1}, {"x": 1, "y": 1})
+
+
+def test_use_with_other_decorators():
+    def deco(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            func(*args, **kwargs)
+
+        return wrapper
+
+    @deco
+    @takes(Point)
+    def test(point):
+        assert isinstance(point, Point)
+
+    test({"x": 1, "y": 1})
+
+
+def test_value_contains_extra_params_throws():
+    @takes(Point)
+    def test(point):
+        assert isinstance(point, Point)
+
+    with pytest.raises(ObjectConversionError):
+        test({"x": 1, "y": 1, "z": 1})
