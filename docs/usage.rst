@@ -88,3 +88,21 @@ to the target class to ignore them. One option is to use Pydantic_, which
 will ignore extra arguments by default.
 
 .. _Pydantic: https://pydantic-docs.helpmanual.io/usage/model_config/
+
+
+Type Annotations
+----------------
+
+Takes does not modify the type annotations of the decorated function.
+
+By using takes, the decorated function will accept a Mapping, and the
+specified type, but the value will always be in instance of the
+specified type inside the decorated function. We suggest a combination of ``Union`` and
+``cast``::
+
+    from typing import cast, Mapping, Union
+
+    @takes(Point)
+    def my_function(point: Union[Point,Mapping]):
+        cast(Point, point)
+        ...
